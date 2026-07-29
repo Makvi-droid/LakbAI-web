@@ -1,1 +1,42 @@
 @import "tailwindcss";
+
+:root {
+  --lakbai-navy: #0a2540;
+  --lakbai-navy-deep: #061627;
+  --lakbai-teal: #14b8a6;
+  --lakbai-teal-deep: #0d9488;
+  --lakbai-coral: #ff6b4a;
+  --lakbai-gold: #ffb347;
+  --lakbai-sand: #faf3e8;
+  --lakbai-ink: #12202b;
+  --lakbai-mist: #7c93a3;
+}
+
+.font-display {
+  font-family: "Fraunces", serif;
+}
+.font-body {
+  font-family: "Plus Jakarta Sans", sans-serif;
+}
+.font-mono {
+  font-family: "JetBrains Mono", monospace;
+}
+
+body {
+  font-family: "Plus Jakarta Sans", sans-serif;
+}
+
+/* Slow ambient gradient drift on the brand panel */
+@keyframes driftGradient {
+  0%,
+  100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+.animate-drift {
+  background-size: 200% 200%;
+  animation: driftGradient 14s ease-in-out infinite;
+}
