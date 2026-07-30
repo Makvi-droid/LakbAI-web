@@ -1,28 +1,20 @@
 import { useAuth } from "../../hooks/useAuth";
-import Button from "../../components/ui/Button";
 
 export default function StaffDashboard() {
-  const { employee, logout } = useAuth();
+  const { employee } = useAuth();
 
   return (
-    <div className="min-h-screen bg-[#FAF3E8] p-8">
-      <div className="mx-auto max-w-3xl">
-        <p className="font-mono text-[11px] uppercase tracking-[0.2em] text-[#0D9488]">
-          Staff
-        </p>
-        <h1 className="font-display mt-1 text-3xl text-[#12202B]">
-          Welcome, {employee?.name ?? "Staff"}
-        </h1>
-        <p className="mt-2 text-sm text-[#7C93A3]">
-          This is the staff dashboard placeholder. Build out your staff features
-          here.
-        </p>
-        <div className="mt-8 max-w-xs">
-          <Button variant="ghost" onClick={logout}>
-            Log out
-          </Button>
-        </div>
-      </div>
+    <div>
+      <p className="font-mono text-[11px] uppercase tracking-[0.2em] text-[#0D9488]">
+        Staff
+      </p>
+      <h1 className="font-display mt-1 text-3xl text-[#12202B]">
+        Welcome, {employee?.name ?? "Staff"}
+      </h1>
+      <p className="mt-2 text-sm text-[#7C93A3]">
+        This is your staff overview. Use the sidebar to navigate between
+        sections.
+      </p>
     </div>
   );
 }

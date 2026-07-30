@@ -7,7 +7,13 @@ import Analytics from "./pages/admin/Analytics";
 import Content from "./pages/admin/Content";
 import Reports from "./pages/admin/Reports";
 import Settings from "./pages/admin/Settings";
+import StaffLayout from "./components/layout/StaffLayout";
 import StaffDashboard from "./pages/staff/StaffDashboard";
+import Tasks from "./pages/staff/Tasks";
+import Schedule from "./pages/staff/Schedule";
+import StaffReports from "./pages/staff/Reports";
+import Messages from "./pages/staff/Messages";
+import Profile from "./pages/staff/Profile";
 import Unauthorized from "./pages/Unauthorized";
 import ProtectedRoute from "./routes/ProtectedRoute";
 import RoleRedirect from "./routes/RoleRedirect";
@@ -38,10 +44,17 @@ export default function App() {
         path="/staff"
         element={
           <ProtectedRoute allowedRoles={["staff"]}>
-            <StaffDashboard />
+            <StaffLayout />
           </ProtectedRoute>
         }
-      />
+      >
+        <Route index element={<StaffDashboard />} />
+        <Route path="tasks" element={<Tasks />} />
+        <Route path="schedule" element={<Schedule />} />
+        <Route path="reports" element={<StaffReports />} />
+        <Route path="messages" element={<Messages />} />
+        <Route path="profile" element={<Profile />} />
+      </Route>
 
       <Route
         path="/"
