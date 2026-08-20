@@ -1,8 +1,10 @@
+import { useState } from "react";
 import { NavLink } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronsLeft, LogOut, X } from "lucide-react";
 import { ADMIN_NAV_ITEMS } from "../../constants/adminNav";
 import { useAuth } from "../../hooks/useAuth";
+import ConfirmDialog from "../ui/ConfirmDialog";
 
 const EXPANDED_WIDTH = 256;
 const COLLAPSED_WIDTH = 84;
@@ -14,6 +16,7 @@ export default function Sidebar({
   onCloseMobile,
 }) {
   const { employee, logout } = useAuth();
+  const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
 
   const initials = (employee?.name ?? "Admin")
     .split(" ")
@@ -21,6 +24,11 @@ export default function Sidebar({
     .slice(0, 2)
     .join("")
     .toUpperCase();
+
+  const handleLogoutConfirmed = () => {
+    setShowLogoutConfirm(false);
+    logout();
+  };
 
   // Rendered twice (desktop + mobile drawer). `isCollapsed` is forced to
   // false inside the mobile drawer, since collapsing only makes sense
@@ -119,7 +127,7 @@ export default function Sidebar({
         </div>
 
         <button
-          onClick={logout}
+          onClick={() => setShowLogoutConfirm(true)}
           className="mt-2 flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-white/70 transition-colors hover:bg-white/10 hover:text-white"
         >
           <LogOut size={18} strokeWidth={1.75} className="shrink-0" />
@@ -171,6 +179,16 @@ export default function Sidebar({
           </>
         )}
       </AnimatePresence>
+
+      <ConfirmDialog
+        open={showLogoutConfirm}
+        title="Log out?"
+        message="You'll need to sign in again to access the admin panel."
+        confirmLabel="Yes, log out"
+        cancelLabel="No, stay"
+        onConfirm={handleLogoutConfirmed}
+        onCancel={() => setShowLogoutConfirm(false)}
+      />
     </>
   );
 }

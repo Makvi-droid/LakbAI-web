@@ -1,10 +1,12 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Mail, Lock, Eye, EyeOff, ArrowRight } from "lucide-react";
 import Input from "../../../components/ui/Input";
 import Button from "../../../components/ui/Button";
 import { useAuth } from "../../../hooks/useAuth";
+import { useToast } from "../../../hooks/useToast";
+import { validateLoginForm } from "../../../utils/validators";
 
 const fieldVariants = {
   hidden: { opacity: 0, y: 12 },
@@ -12,51 +14,27 @@ const fieldVariants = {
 };
 
 export default function LoginForm() {
-  // Renamed the auth context's `loading` to `authLoading` — it was
-  // shadowing the local submit-button `loading` state below, which
-  // meant the button's spinner prop was silently reading the wrong value.
   const { login, user, role, loading: authLoading } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
+  const toast = useToast();
 
   const [form, setForm] = useState({ email: "", password: "" });
   const [showPassword, setShowPassword] = useState(false);
   const [remember, setRemember] = useState(false);
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState({});
-  const [authError, setAuthError] = useState("");
 
-  // Derived directly from auth state on every render — no setState
-  // needed. Signed in, but no matching employee record / role was found.
+  // Guards against re-firing the "no role assigned" toast on every
+  // render while this state remains true (e.g. parent re-renders).
+  const hasWarnedNoRole = useRef(false);
+
   const noRoleAssigned = !authLoading && Boolean(user) && !role;
 
-  // Redirect reactively once the auth context is fully settled, instead of
-  // navigating immediately after the login() promise resolves. login()
-  // only waits for Supabase's signInWithPassword call — it does NOT wait
-  // for the employee profile (and therefore the role) to be fetched, which
-  // happens asynchronously via the auth state listener. Navigating right
-  // after await login() could land on a role-gated route (/admin, /staff)
-  // before the role was known yet, causing a bounce through /unauthorized.
-  //
-  // AuthProvider guarantees there's never a frame where `user` is set,
-  // `loading` is false, and `role` is still unresolved — so gating on
-  // `!authLoading && user` here is safe and race-free.
   useEffect(() => {
     if (authLoading || !user || !role) return;
 
-    // The role's own dashboard is always a safe redirect target.
     const fallback = role === "admin" ? "/admin" : "/staff";
-
-    // `location.state.from` can be left over from an ENTIRELY UNRELATED
-    // prior navigation — most commonly: a different user was previously
-    // logged in, got logged out from e.g. /admin, ProtectedRoute bounced
-    // them to /login with state.from.pathname = "/admin", and now A
-    // DIFFERENT account (say, a staff account) is signing in on that same
-    // /login page. That leftover "/admin" has nothing to do with this new
-    // user's role and must not be trusted blindly.
-    //
-    // Only honor `from` if it's actually inside the section this role is
-    // allowed to access — otherwise send them to their own dashboard.
     const fromPath = location.state?.from?.pathname;
     const fromIsSameSection = fromPath && fromPath.startsWith(fallback);
     const redirectTo = fromIsSameSection ? fromPath : fallback;
@@ -64,45 +42,44 @@ export default function LoginForm() {
     navigate(redirectTo, { replace: true });
   }, [authLoading, user, role, location.state, navigate]);
 
+  useEffect(() => {
+    if (noRoleAssigned && !hasWarnedNoRole.current) {
+      hasWarnedNoRole.current = true;
+      toast.error("This account has no staff or admin role assigned.");
+    }
+    if (!noRoleAssigned) {
+      hasWarnedNoRole.current = false;
+    }
+  }, [noRoleAssigned, toast]);
+
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
     setErrors({ ...errors, [e.target.name]: undefined });
-    setAuthError("");
-  };
-
-  const validate = () => {
-    const next = {};
-    if (!form.email) next.email = "Email is required";
-    if (!form.password) next.password = "Password is required";
-    setErrors(next);
-    return Object.keys(next).length === 0;
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!validate()) return;
+
+    const validationErrors = validateLoginForm(form);
+    setErrors(validationErrors);
+    if (Object.keys(validationErrors).length > 0) return;
 
     setLoading(true);
-    setAuthError("");
     try {
-      // Just sign in here. The redirect itself is handled by the effect
-      // above once `user` + `role` are both confirmed ready — this avoids
-      // racing a manual navigate() against the async role fetch.
-      await login(form.email, form.password);
+      await login(form.email.trim(), form.password);
+      toast.success("Signed in successfully.");
+      // Redirect is handled by the effect above once `user` + `role`
+      // are both confirmed ready — avoids racing the async role fetch.
     } catch (err) {
-      setAuthError(
+      toast.error(
         err.message === "Invalid login credentials"
           ? "Incorrect email or password."
-          : err.message,
+          : err.message || "Something went wrong. Please try again.",
       );
     } finally {
       setLoading(false);
     }
   };
-
-  const displayedError =
-    authError ||
-    (noRoleAssigned ? "This account has no staff or admin role assigned." : "");
 
   return (
     <motion.form
@@ -165,16 +142,6 @@ export default function LoginForm() {
           }
         />
       </motion.div>
-
-      {displayedError && (
-        <motion.p
-          initial={{ opacity: 0, y: -4 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="rounded-lg bg-red-50 px-3 py-2 text-center text-xs text-red-500"
-        >
-          {displayedError}
-        </motion.p>
-      )}
 
       <motion.div
         variants={fieldVariants}
