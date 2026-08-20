@@ -1,17 +1,17 @@
-import { motion } from 'framer-motion';
+import { motion } from "framer-motion";
 
 const VARIANTS = {
-  primary: 'bg-[#0A2540] text-white hover:bg-[#0D9488]',
-  ghost: 'bg-transparent text-[#12202B] hover:bg-black/5',
+  primary: "bg-[#0A2540] text-white hover:bg-[#0D9488]",
+  ghost: "bg-transparent text-[#12202B] hover:bg-black/5",
 };
 
 export default function Button({
   children,
-  type = 'button',
+  type = "button",
   onClick,
   loading = false,
-  variant = 'primary',
-  className = '',
+  variant = "primary",
+  className = "",
 }) {
   return (
     <motion.button
@@ -25,7 +25,7 @@ export default function Button({
       {loading ? (
         <motion.span
           animate={{ rotate: 360 }}
-          transition={{ repeat: Infinity, duration: 0.8, ease: 'linear' }}
+          transition={{ repeat: Infinity, duration: 0.8, ease: "linear" }}
           className="h-4 w-4 rounded-full border-2 border-white/30 border-t-white"
         />
       ) : (

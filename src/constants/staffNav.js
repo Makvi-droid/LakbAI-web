@@ -15,5 +15,6 @@ export const STAFF_NAV_ITEMS = [
   { label: "Schedule", path: "/staff/schedule", icon: CalendarDays },
   { label: "Reports", path: "/staff/reports", icon: ClipboardList },
   { label: "Messages", path: "/staff/messages", icon: MessageSquare },
+  { label: "AI Chat", path: "/staff/chat", icon: MessageSquare },
   { label: "Profile", path: "/staff/profile", icon: UserCircle },
 ];

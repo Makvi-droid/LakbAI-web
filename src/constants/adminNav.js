@@ -1,19 +1,26 @@
 import {
-  LayoutDashboard,
-  Users,
+  Activity,
   BarChart3,
-  FileText,
+  Bot,
+  Building2,
   ClipboardList,
-  Settings,
+  FileText,
+  LayoutDashboard,
+  MessageSquareText,
+  //Settings,
+  Users,
 } from "lucide-react";
 
-// Single source of truth for the admin sidebar's nav items.
-// `end: true` makes NavLink match /admin exactly (not every /admin/* route).
 export const ADMIN_NAV_ITEMS = [
   { label: "Overview", path: "/admin", icon: LayoutDashboard, end: true },
-  { label: "Employees", path: "/admin/employees", icon: Users },
+  { label: "Staff Access", path: "/admin/employees", icon: Users },
+  { label: "Destinations", path: "/admin/content", icon: FileText },
+  { label: "Agency Profile", path: "/admin/settings", icon: Building2 },
+  { label: "AI Tour Guide", path: "/admin/tour-guide", icon: Bot },
+  { label: "Sentiment", path: "/admin/sentiment", icon: MessageSquareText },
+  { label: "Crowd Density", path: "/admin/crowd-density", icon: Activity },
   { label: "Analytics", path: "/admin/analytics", icon: BarChart3 },
-  { label: "Content", path: "/admin/content", icon: FileText },
   { label: "Reports", path: "/admin/reports", icon: ClipboardList },
-  { label: "Settings", path: "/admin/settings", icon: Settings },
+  { label: "AI Chat", path: "/admin/chat", icon: MessageSquareText },
+  //{ label: "Settings", path: "/admin/settings", icon: Settings },
 ];
