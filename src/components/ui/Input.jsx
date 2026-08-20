@@ -1,16 +1,14 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 
-/**
- * Reusable labeled input with a leading icon, teal focus ring,
- * and an optional trailing element (e.g. password show/hide toggle).
- */
 export default function Input({
   label,
   icon: Icon,
   type = "text",
   value,
   onChange,
+  onBlur,
+  onFocus,
   name,
   placeholder,
   rightElement,
@@ -48,8 +46,14 @@ export default function Input({
           type={type}
           value={value}
           onChange={onChange}
-          onFocus={() => setFocused(true)}
-          onBlur={() => setFocused(false)}
+          onFocus={(event) => {
+            setFocused(true);
+            onFocus?.(event);
+          }}
+          onBlur={(event) => {
+            setFocused(false);
+            onBlur?.(event);
+          }}
           placeholder={placeholder}
           autoComplete="off"
           className="w-full bg-transparent text-sm text-[#12202B] placeholder:text-[#7C93A3] focus:outline-none"

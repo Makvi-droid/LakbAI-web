@@ -21,58 +21,61 @@ import Profile from "./pages/staff/Profile";
 import Unauthorized from "./pages/Unauthorized";
 import ProtectedRoute from "./routes/ProtectedRoute";
 import RoleRedirect from "./routes/RoleRedirect";
+import { ToastProvider } from "./context/ToastProvider";
 
 export default function App() {
   return (
-    <Routes>
-      <Route path="/login" element={<LoginPage />} />
-      <Route path="/unauthorized" element={<Unauthorized />} />
+    <ToastProvider>
+      <Routes>
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/unauthorized" element={<Unauthorized />} />
 
-      <Route
-        path="/admin"
-        element={
-          <ProtectedRoute allowedRoles={["admin"]}>
-            <AdminLayout />
-          </ProtectedRoute>
-        }
-      >
-        <Route index element={<AdminDashboard />} />
-        <Route path="employees" element={<Employees />} />
-        <Route path="content" element={<Content />} />
-        <Route path="settings" element={<Settings />} />
-        <Route path="tour-guide" element={<TourGuide />} />
-        <Route path="sentiment" element={<Sentiment />} />
-        <Route path="crowd-density" element={<CrowdDensity />} />
-        <Route path="analytics" element={<Analytics />} />
-        <Route path="reports" element={<Reports />} />
-        <Route path="chat" element={<ChatPage role="admin" />} />
-      </Route>
+        <Route
+          path="/admin"
+          element={
+            <ProtectedRoute allowedRoles={["admin"]}>
+              <AdminLayout />
+            </ProtectedRoute>
+          }
+        >
+          <Route index element={<AdminDashboard />} />
+          <Route path="employees" element={<Employees />} />
+          <Route path="content" element={<Content />} />
+          <Route path="settings" element={<Settings />} />
+          <Route path="tour-guide" element={<TourGuide />} />
+          <Route path="sentiment" element={<Sentiment />} />
+          <Route path="crowd-density" element={<CrowdDensity />} />
+          <Route path="analytics" element={<Analytics />} />
+          <Route path="reports" element={<Reports />} />
+          <Route path="chat" element={<ChatPage role="admin" />} />
+        </Route>
 
-      <Route
-        path="/staff"
-        element={
-          <ProtectedRoute allowedRoles={["staff"]}>
-            <StaffLayout />
-          </ProtectedRoute>
-        }
-      >
-        <Route index element={<StaffDashboard />} />
-        <Route path="tasks" element={<Tasks />} />
-        <Route path="schedule" element={<Schedule />} />
-        <Route path="reports" element={<StaffReports />} />
-        <Route path="messages" element={<Messages />} />
-        <Route path="chat" element={<ChatPage role="staff" />} />
-        <Route path="profile" element={<Profile />} />
-      </Route>
+        <Route
+          path="/staff"
+          element={
+            <ProtectedRoute allowedRoles={["staff"]}>
+              <StaffLayout />
+            </ProtectedRoute>
+          }
+        >
+          <Route index element={<StaffDashboard />} />
+          <Route path="tasks" element={<Tasks />} />
+          <Route path="schedule" element={<Schedule />} />
+          <Route path="reports" element={<StaffReports />} />
+          <Route path="messages" element={<Messages />} />
+          <Route path="chat" element={<ChatPage role="staff" />} />
+          <Route path="profile" element={<Profile />} />
+        </Route>
 
-      <Route
-        path="/"
-        element={
-          <ProtectedRoute>
-            <RoleRedirect />
-          </ProtectedRoute>
-        }
-      />
-    </Routes>
+        <Route
+          path="/"
+          element={
+            <ProtectedRoute>
+              <RoleRedirect />
+            </ProtectedRoute>
+          }
+        />
+      </Routes>
+    </ToastProvider>
   );
 }
