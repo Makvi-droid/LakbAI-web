@@ -26,6 +26,10 @@ export default function LoginForm() {
   const [errors, setErrors] = useState({});
   const [authError, setAuthError] = useState("");
 
+  // Derived directly from auth state on every render — no setState
+  // needed. Signed in, but no matching employee record / role was found.
+  const noRoleAssigned = !authLoading && Boolean(user) && !role;
+
   // Redirect reactively once the auth context is fully settled, instead of
   // navigating immediately after the login() promise resolves. login()
   // only waits for Supabase's signInWithPassword call — it does NOT wait
@@ -38,13 +42,7 @@ export default function LoginForm() {
   // `loading` is false, and `role` is still unresolved — so gating on
   // `!authLoading && user` here is safe and race-free.
   useEffect(() => {
-    if (authLoading || !user) return;
-
-    if (!role) {
-      // Signed in, but no matching employee record / role was found.
-      setAuthError("This account has no staff or admin role assigned.");
-      return;
-    }
+    if (authLoading || !user || !role) return;
 
     // The role's own dashboard is always a safe redirect target.
     const fallback = role === "admin" ? "/admin" : "/staff";
@@ -101,6 +99,10 @@ export default function LoginForm() {
       setLoading(false);
     }
   };
+
+  const displayedError =
+    authError ||
+    (noRoleAssigned ? "This account has no staff or admin role assigned." : "");
 
   return (
     <motion.form
@@ -164,13 +166,13 @@ export default function LoginForm() {
         />
       </motion.div>
 
-      {authError && (
+      {displayedError && (
         <motion.p
           initial={{ opacity: 0, y: -4 }}
           animate={{ opacity: 1, y: 0 }}
           className="rounded-lg bg-red-50 px-3 py-2 text-center text-xs text-red-500"
         >
-          {authError}
+          {displayedError}
         </motion.p>
       )}
 

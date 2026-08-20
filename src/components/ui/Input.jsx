@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { motion } from 'framer-motion';
+import { useState } from "react";
+import { motion } from "framer-motion";
 
 /**
  * Reusable labeled input with a leading icon, teal focus ring,
@@ -8,7 +8,7 @@ import { motion } from 'framer-motion';
 export default function Input({
   label,
   icon: Icon,
-  type = 'text',
+  type = "text",
   value,
   onChange,
   name,
@@ -20,19 +20,28 @@ export default function Input({
 
   return (
     <div className="w-full">
-      <label htmlFor={name} className="mb-1.5 block text-xs font-medium tracking-wide text-[#12202B]/70">
+      <label
+        htmlFor={name}
+        className="mb-1.5 block text-xs font-medium tracking-wide text-[#12202B]/70"
+      >
         {label}
       </label>
       <div
         className={`flex items-center gap-2.5 rounded-xl border bg-white px-3.5 py-3 transition-all duration-200 ${
           error
-            ? 'border-red-400 ring-4 ring-red-100'
+            ? "border-red-400 ring-4 ring-red-100"
             : focused
-            ? 'border-[#14B8A6] ring-4 ring-[#14B8A6]/15'
-            : 'border-black/10'
+              ? "border-[#14B8A6] ring-4 ring-[#14B8A6]/15"
+              : "border-black/10"
         }`}
       >
-        {Icon && <Icon size={17} className="shrink-0 text-[#7C93A3]" strokeWidth={1.75} />}
+        {Icon && (
+          <Icon
+            size={17}
+            className="shrink-0 text-[#7C93A3]"
+            strokeWidth={1.75}
+          />
+        )}
         <input
           id={name}
           name={name}

@@ -1,4 +1,4 @@
-import { motion } from 'framer-motion';
+import { motion } from "framer-motion";
 
 // Abstract waypoints standing in for stops on a planned itinerary.
 const waypoints = [
@@ -9,7 +9,7 @@ const waypoints = [
   { x: 322, y: 108 },
 ];
 
-const pathD = `M${waypoints.map((p) => `${p.x},${p.y}`).join(' L')}`;
+const pathD = `M${waypoints.map((p) => `${p.x},${p.y}`).join(" L")}`;
 
 /**
  * A dotted route connecting waypoints, with a glowing marker that
@@ -36,7 +36,9 @@ export default function RouteAnimation() {
           cx={p.x}
           cy={p.y}
           r={i === waypoints.length - 1 ? 5 : 3}
-          fill={i === waypoints.length - 1 ? '#FF6B4A' : 'rgba(255,255,255,0.5)'}
+          fill={
+            i === waypoints.length - 1 ? "#FF6B4A" : "rgba(255,255,255,0.5)"
+          }
         />
       ))}
 
@@ -46,14 +48,24 @@ export default function RouteAnimation() {
         fill="#FFB347"
         opacity={0.22}
         animate={{ cx, cy }}
-        transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut', repeatDelay: 1 }}
+        transition={{
+          duration: 6,
+          repeat: Infinity,
+          ease: "easeInOut",
+          repeatDelay: 1,
+        }}
       />
       {/* traveling marker itself */}
       <motion.circle
         r="5"
         fill="#FFB347"
         animate={{ cx, cy }}
-        transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut', repeatDelay: 1 }}
+        transition={{
+          duration: 6,
+          repeat: Infinity,
+          ease: "easeInOut",
+          repeatDelay: 1,
+        }}
       />
     </svg>
   );

@@ -7,6 +7,10 @@ import Analytics from "./pages/admin/Analytics";
 import Content from "./pages/admin/Content";
 import Reports from "./pages/admin/Reports";
 import Settings from "./pages/admin/Settings";
+import TourGuide from "./pages/admin/TourGuide";
+import Sentiment from "./pages/admin/Sentiment";
+import CrowdDensity from "./pages/admin/CrowdDensity";
+import ChatPage from "./pages/ChatPage";
 import StaffLayout from "./components/layout/StaffLayout";
 import StaffDashboard from "./pages/staff/StaffDashboard";
 import Tasks from "./pages/staff/Tasks";
@@ -34,10 +38,14 @@ export default function App() {
       >
         <Route index element={<AdminDashboard />} />
         <Route path="employees" element={<Employees />} />
-        <Route path="analytics" element={<Analytics />} />
         <Route path="content" element={<Content />} />
-        <Route path="reports" element={<Reports />} />
         <Route path="settings" element={<Settings />} />
+        <Route path="tour-guide" element={<TourGuide />} />
+        <Route path="sentiment" element={<Sentiment />} />
+        <Route path="crowd-density" element={<CrowdDensity />} />
+        <Route path="analytics" element={<Analytics />} />
+        <Route path="reports" element={<Reports />} />
+        <Route path="chat" element={<ChatPage role="admin" />} />
       </Route>
 
       <Route
@@ -53,6 +61,7 @@ export default function App() {
         <Route path="schedule" element={<Schedule />} />
         <Route path="reports" element={<StaffReports />} />
         <Route path="messages" element={<Messages />} />
+        <Route path="chat" element={<ChatPage role="staff" />} />
         <Route path="profile" element={<Profile />} />
       </Route>
 
