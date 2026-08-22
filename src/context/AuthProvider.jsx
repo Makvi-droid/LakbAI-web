@@ -40,6 +40,10 @@ export function AuthProvider({ children }) {
     if (!isSupabaseConfigured) return;
 
     let mounted = true;
+    // Tracks the user id we last fetched an employee profile for, so
+    // we can tell a real sign-in/sign-out/user-switch apart from a
+    // silent event (e.g. TOKEN_REFRESHED on tab focus) for the same user.
+    let currentUserId = null;
 
     const { data: listener } = supabase.auth.onAuthStateChange(
       (_event, session) => {
@@ -47,12 +51,22 @@ export function AuthProvider({ children }) {
 
         setSession(session);
         setAuthLoading(false);
+
+        const newUserId = session?.user?.id ?? null;
+
+        // Same user as before (e.g. a token refresh fired by tab focus) —
+        // session is already updated above, nothing else to do. Skipping
+        // this avoids wiping `employee` and re-toggling `employeeLoading`,
+        // which was causing ProtectedRoute to remount the page on tab focus.
+        if (newUserId === currentUserId) return;
+        currentUserId = newUserId;
+
         setEmployee(null);
-        setEmployeeLoading(!!session?.user?.id);
+        setEmployeeLoading(!!newUserId);
 
         setTimeout(() => {
           if (!mounted) return;
-          fetchEmployee(session?.user?.id);
+          fetchEmployee(newUserId);
         }, 0);
       },
     );
