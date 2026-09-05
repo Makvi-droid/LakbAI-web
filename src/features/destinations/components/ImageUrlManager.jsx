@@ -24,6 +24,16 @@ export default function ImageUrlManager({ photos, onChange, error }) {
     setDraftError("");
   };
 
+  // Also commit on blur — covers the case where someone types a URL and
+  // goes straight to the form's main submit button instead of clicking
+  // "Add" first. Blur fires before the form's onSubmit, so this reliably
+  // flushes any pending draft URL into `photos` before the save happens.
+  const handleBlur = () => {
+    if (draftUrl.trim()) {
+      handleAdd();
+    }
+  };
+
   const handleRemove = (url) => {
     onChange(photos.filter((photo) => photo !== url));
   };
@@ -48,6 +58,7 @@ export default function ImageUrlManager({ photos, onChange, error }) {
               handleAdd();
             }
           }}
+          onBlur={handleBlur}
           placeholder="https://example.com/photo.jpg"
           className="w-full rounded-xl border border-[#D9E2EC] bg-[#F8FAFC] px-3 py-2.5 text-sm text-[#12202B] outline-none focus:border-[#14B8A6]"
         />
@@ -59,6 +70,11 @@ export default function ImageUrlManager({ photos, onChange, error }) {
           <ImagePlus size={15} /> Add
         </button>
       </div>
+
+      <p className="mt-1.5 text-[11px] text-[#7C93A3]">
+        Press Enter, click Add, or just click away from this field to include
+        a pasted URL.
+      </p>
 
       {(draftError || error) && (
         <p className="mt-1.5 text-xs text-[#B91C1C]">{draftError || error}</p>
