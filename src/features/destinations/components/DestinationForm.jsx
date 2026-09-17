@@ -1,4 +1,4 @@
-import { Pencil, Plus } from "lucide-react";
+import { Pencil, Plus, Sparkles } from "lucide-react";
 import FormField from "../../../components/ui/FormField";
 import ImageUrlManager from "./ImageUrlManager";
 
@@ -132,6 +132,22 @@ export default function DestinationForm({
               Immersive support enabled
             </label>
           </div>
+        </div>
+
+        <div className="rounded-xl border border-[#FDE68A] bg-[#FFFBEB] px-3 py-2.5">
+          <label className="inline-flex items-center gap-2 text-sm font-medium text-[#92400E]">
+            <input
+              type="checkbox"
+              name="is_hidden_gem"
+              checked={form.is_hidden_gem}
+              onChange={handleInput}
+            />
+            <Sparkles size={14} />
+            Mark as Hidden Gem
+          </label>
+          <p className="mt-1 pl-6 text-xs text-[#92400E]/80">
+            Featured as an under-visited, highly-rated destination in the mobile app's recommendations.
+          </p>
         </div>
 
         <FormField label="Description" error={fieldError("description")}>

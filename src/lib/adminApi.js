@@ -51,6 +51,7 @@ const fallbackDestinations = [
     longitude: 121.0618,
     destination_photos: "[]",
     immersive_support: true,
+    is_hidden_gem: false,
     max_capacity: 120,
   },
   {
@@ -66,6 +67,7 @@ const fallbackDestinations = [
     longitude: 119.419,
     destination_photos: "[]",
     immersive_support: true,
+    is_hidden_gem: false,
     max_capacity: 220,
   },
   {
@@ -80,6 +82,7 @@ const fallbackDestinations = [
     longitude: 120.905,
     destination_photos: "[]",
     immersive_support: false,
+    is_hidden_gem: true,
     max_capacity: 90,
   },
 ];
@@ -249,6 +252,7 @@ function normalizeDestinationRow(row) {
       normalized.destination_photos = [];
     }
   }
+  normalized.is_hidden_gem = Boolean(normalized.is_hidden_gem);
   return normalized;
 }
 
@@ -520,6 +524,7 @@ export async function saveDestination(destination) {
         ? destination.destination_photos
         : JSON.stringify(destination.destination_photos ?? []),
     immersive_support: Boolean(destination.immersive_support),
+    is_hidden_gem: Boolean(destination.is_hidden_gem),
     max_capacity: Number(destination.max_capacity ?? 100),
   };
 

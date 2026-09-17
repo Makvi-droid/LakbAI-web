@@ -11,6 +11,7 @@ const emptyForm = {
   longitude: "",
   max_capacity: 100,
   immersive_support: false,
+  is_hidden_gem: false,
   destination_photos: [],
 };
 
@@ -19,8 +20,6 @@ export function useDestinationForm() {
   const [editingId, setEditingId] = useState(null);
   const [touched, setTouched] = useState({});
 
-  // Derived from `form`, not stored in state — errors are always in sync
-  // with the current form on every render, no effect/setState needed.
   const errors = useMemo(() => validateDestinationForm(form), [form]);
   const isValid = useMemo(() => Object.keys(errors).length === 0, [errors]);
 
@@ -50,6 +49,7 @@ export function useDestinationForm() {
       longitude: destination.longitude ?? "",
       max_capacity: destination.max_capacity ?? 100,
       immersive_support: Boolean(destination.immersive_support),
+      is_hidden_gem: Boolean(destination.is_hidden_gem),
       destination_photos: Array.isArray(destination.destination_photos)
         ? destination.destination_photos
         : [],

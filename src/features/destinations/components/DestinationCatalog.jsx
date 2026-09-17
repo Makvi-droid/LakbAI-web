@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Pencil, Trash2, ImageOff, MapPin } from "lucide-react";
 import CrowdLevelBadge from "./CrowdLevelBadge";
+import HiddenGemBadge from "./HiddenGemBadge";
 
 const DESCRIPTION_LIMIT = 70;
 
@@ -45,6 +46,7 @@ export default function DestinationCatalog({
               <th className="px-4 py-3 font-medium">Crowd</th>
               <th className="px-4 py-3 font-medium">Coordinates</th>
               <th className="px-4 py-3 font-medium">Immersive</th>
+              <th className="px-4 py-3 font-medium">Hidden Gem</th>
               <th className="px-4 py-3 font-medium">Actions</th>
             </tr>
           </thead>
@@ -52,7 +54,7 @@ export default function DestinationCatalog({
             {loading ? (
               <tr>
                 <td
-                  colSpan={8}
+                  colSpan={9}
                   className="px-4 py-8 text-center text-[#7C93A3]"
                 >
                   Loading destinations...
@@ -61,7 +63,7 @@ export default function DestinationCatalog({
             ) : destinations.length === 0 ? (
               <tr>
                 <td
-                  colSpan={8}
+                  colSpan={9}
                   className="px-4 py-8 text-center text-[#7C93A3]"
                 >
                   No destinations yet.
@@ -97,7 +99,7 @@ function DestinationRow({ destination, onEdit, onDelete }) {
       <td className="px-4 py-3">
         <Thumbnail url={cover} extraCount={Math.max(photos.length - 1, 0)} />
       </td>
-      <td className="max-w-[220px] px-4 py-3 text-[#12202B]">
+      <td className="max-w-55 px-4 py-3 text-[#12202B]">
         <div className="font-medium">{destination.destination_name}</div>
         <div className="text-xs text-[#7C93A3]">
           Cap: {destination.max_capacity ?? 100}
@@ -120,6 +122,9 @@ function DestinationRow({ destination, onEdit, onDelete }) {
       </td>
       <td className="px-4 py-3 text-[#12202B]">
         {destination.immersive_support ? "Yes" : "No"}
+      </td>
+      <td className="px-4 py-3">
+        <HiddenGemBadge isHiddenGem={destination.is_hidden_gem} />
       </td>
       <td className="px-4 py-3">
         <div className="flex items-center gap-2">
