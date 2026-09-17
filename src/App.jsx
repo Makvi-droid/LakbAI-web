@@ -13,6 +13,7 @@ import CrowdDensity from "./pages/admin/CrowdDensity";
 import ChatPage from "./pages/ChatPage";
 import StaffLayout from "./components/layout/StaffLayout";
 import StaffDashboard from "./pages/staff/StaffDashboard";
+import Destinations from "./pages/staff/Destinations";
 import Tasks from "./pages/staff/Tasks";
 import Schedule from "./pages/staff/Schedule";
 import StaffReports from "./pages/staff/Reports";
@@ -59,6 +60,7 @@ export default function App() {
           }
         >
           <Route index element={<StaffDashboard />} />
+          <Route path="destinations" element={<Destinations />} />
           <Route path="tasks" element={<Tasks />} />
           <Route path="schedule" element={<Schedule />} />
           <Route path="reports" element={<StaffReports />} />
