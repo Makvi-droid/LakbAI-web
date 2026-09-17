@@ -1,5 +1,6 @@
 import {
   LayoutDashboard,
+  Compass,
   ClipboardCheck,
   CalendarDays,
   ClipboardList,
@@ -11,6 +12,7 @@ import {
 // `end: true` makes NavLink match /staff exactly (not every /staff/* route).
 export const STAFF_NAV_ITEMS = [
   { label: "Overview", path: "/staff", icon: LayoutDashboard, end: true },
+  { label: "Destinations", path: "/staff/destinations", icon: Compass },
   { label: "My Tasks", path: "/staff/tasks", icon: ClipboardCheck },
   { label: "Schedule", path: "/staff/schedule", icon: CalendarDays },
   { label: "Reports", path: "/staff/reports", icon: ClipboardList },
